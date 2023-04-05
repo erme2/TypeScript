@@ -40,6 +40,7 @@ Per fortuna ce ne interessano solo alcune:
 - [sourceMap](./installazione.md#sourcemap)
 - [noImplicitAny](./installazione.md#noimplicitany)
 - [noUnusedParameters](./installazione.md#nounusedparameters)
+- [noUnusedLocals](./installazione.md#nounusedlocals)
 
 ### target
 Di default TS compila i files per essere compatibili con una versione di JS molto vecchia [ES5 (ECMAScript 5 - 2009)](https://www.w3schools.com/Js/js_es5.asp), ma noi vorremmo usare una versione un po' più recente, e per fare questo possiamo sono possibili diverse [opzioni](https://www.typescriptlang.org/tsconfig#target). Più si va indietro nel tempo e maggiore sarà la compatibilità in tutti gli ambiti ma con una ottimizzazione minore, più si va avanti e più il codice sarà ottimizzato ma la scelta sarà limitata.
@@ -76,6 +77,9 @@ Se abilitata (fortemente consigliata) non sarà possibile dichiarare funzioni ch
 
 ### noImplicitReturns
 Se abililitata (fortemente consigliata) le funzioni non potranno restituire `undefined`
+
+### noUnusedLocals
+Se abilitata (fortemente consigliata) avrai errore se ci sono variabili dichiarate ma non usate
 
 
 ## Debug in VsCode

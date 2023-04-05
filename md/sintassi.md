@@ -98,23 +98,33 @@ JS ha una lista molto limitata di types:
 in typescript i numeri possono essere intervallati 
 da underscore, questo può aiutare nel definire i
 numeri più grandi
- */ 
+*/ 
 let sales: number = 123456789;
 let sales: number = 123_456_789;
 ```
 
 ### Types annotations
 ```typescript
-// Quando dichiariamo una variabile possiamo usare una annotation che dichiara in maniera esplicita il type che vogliamo asssegnare alla variabile.
+/*
+Quando dichiariamo una variabile possiamo usare una 
+annotation che dichiara in maniera esplicita il type 
+che vogliamo asssegnare alla variabile.
+*/
 
 let test1: number = 123_456_789;
-// ma questa dichiarazione é ridondante se assegnamo un valore alla variabile quindi possiamo ometterla
+/*
+ma questa dichiarazione é ridondante se assegnamo 
+un valore alla variabile quindi possiamo ometterla
+*/
 let test2 = 123_456_789;
 
 // altrimenti dovremmo esplicitarla
 let test3: number;
 
-// se non esplicitata la variabile sarà creata una variabile di tipo any
+/*
+se non esplicitata la variabile sarà creata una 
+variabile di tipo any
+*/
 let test4;
 ```
 
@@ -134,7 +144,11 @@ let tuple2: [number, string] = [1, 'test', 3]; // error
 Enumb rappresenta un numero limitato di valori possibili per una variabile.
 
 ```typescript
-// i valori non esplicitati sono 0 (per il primo) e +1 sul precedente su tutti gli altri (in questo caso 0, 1, 2)
+/*
+i valori non esplicitati sono 0 (per il primo) 
+e +1 sul precedente su tutti gli altri (in questo 
+caso 0, 1, 2)
+*/
 enum sizesA { small, medium, large};
 // in questo caso 3,4,5
 enum sizesB { small=3, medium, large};
@@ -146,14 +160,21 @@ let mySize: sizesA = sizesA.medium; // 1
 let mySize: sizesB = sizesA.medium; // 4
 let mySize: sizesC = sizesA.medium; // 5
 
-// nel caso di stringhe tutti i valori devono essere esplicitati. In questo caso small = 0, medium = 'a' e large provoca un errore
+/*
+nel caso di stringhe tutti i valori devono essere 
+esplicitati. In questo caso small = 0, medium = 'a' 
+e large provoca un errore
+*/
 enum sizesD { small, medium='a', large};
 ```
 
 ## arrays
 Gli array sono presenti in JS e come tutte le altre variabili non hanno nessun tipo di limitazione: un array può contenere un numero illimitato di valori senza nessun controllo sul tipo dei singoli valori. In TS é possibile descrivere meglio come vogliamo costruire gli array.
 ```typescript
-// questo array dovrebbe contenere solo numberi e provocherà un errore
+/*
+questo array dovrebbe contenere solo numberi 
+e provocherà un errore
+*/
 let numbers: number[] = [1, 2, '3'];
 ```
 ## functions
@@ -172,7 +193,10 @@ function calculateTax2(income: number): number
         return 0;
     return Math.round(income/100*20);
 }
-// errore - TS deduce dal codice che se income é una string ci sarà un errore
+/*
+errore - TS deduce dal codice che se income é una 
+string ci sarà un errore
+*/
 function calculateTax3(income: number|string): number
 {
     if (income < 50_000)
@@ -187,16 +211,43 @@ function calculateTax4(income: number): number
         return 0;
 }
 
+/*
+errore - se noImplicitReturns e void non é citato 
+come possibile risultato
+*/
 function calculateTax5(income: number)
 {
     if (income < 50_000)
         return 0;
 }
 
-// abbiamo coscientemente detto che non importa se non avremo un risultato quando income é maggiore di 50000
-function calculateTax5(income: number): number|void
+/*
+non il massimo ma funziona anche con 
+noImplicitReturns = true
+*/ 
+function calculateTax6(income: number): number|void
 {
     if (income < 50_000)
         return 0;
+}
+
+/*
+anche la dichiarazione dei parametri può diventare 
+implicita se si usa un valore di default. In questo
+caso incomeYear sarà definito come number
+*/
+function calculateTax6(income: number, incomeYear = 2022): number
+{
+    let taxesPerc: number;
+
+    if (incomeYear > 2000) {
+        taxesPerc = 0.2;
+    } else {
+        taxesPerc = 0.4;
+    }
+    if (income < 50_000)
+        return 0;
+
+    return income * taxesPerc;
 }
 ```
