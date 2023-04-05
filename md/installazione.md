@@ -37,7 +37,9 @@ Per fortuna ce ne interessano solo alcune:
 - [outDir](./installazione.md#outdir)
 - [removeComments](./installazione.md#removecomments)
 - [noEmitOnError](./installazione.md#noemitonerror)
-
+- [sourceMap](./installazione.md#sourcemap)
+- [noImplicitAny](./installazione.md#noimplicitany)
+- [noUnusedParameters](./installazione.md#nounusedparameters)
 
 ### target
 Di default TS compila i files per essere compatibili con una versione di JS molto vecchia [ES5 (ECMAScript 5 - 2009)](https://www.w3schools.com/Js/js_es5.asp), ma noi vorremmo usare una versione un po' più recente, e per fare questo possiamo sono possibili diverse [opzioni](https://www.typescriptlang.org/tsconfig#target). Più si va indietro nel tempo e maggiore sarà la compatibilità in tutti gli ambiti ma con una ottimizzazione minore, più si va avanti e più il codice sarà ottimizzato ma la scelta sarà limitata.
@@ -62,3 +64,33 @@ Se settata a true questa impostazione rimuoverà i commenti nella compilazione
 
 ### noEmitOnError
 Se settata a true la compilazione non emetterà alcun risultato se si verificherà un qualsiasi errore
+
+### sourceMap
+Se abilitato TS creerà un file `.map` che ci permetterà di capire cosa é stato compilato e dove si trova nella `dist` dir.
+
+### noImplicitAny
+Se abilitato consente l'uso indiscriminato di variabili di tipo `any` (non usatela se possibile)
+
+### noUnusedParameters
+Se abilitata (fortemente consigliata) non sarà possibile dichiarare funzioni che non usino tutti i parametri richiesti
+
+### noImplicitReturns
+Se abililitata (fortemente consigliata) le funzioni non potranno restituire `undefined`
+
+
+## Debug in VsCode
+Selezionate il file di partenza (molto importante), cliccate sull'icona `Run and Debug` sulla barra di controllo, quando lo fate per la prima volta dovrete cliccare su `create a launch.json file` e poi selezionate `Node.js`. VsCode creerà una cartella `.vscode` con dentro un nuovo file [`launch.json`](./../.vscode/launch.json). Questo file dirà a VsCode come fare per eseguire il debug sull'applicazione che state scrivendo.
+Dovremo aggiungere solo una linea, subito dopo la linea `"program"` e prima di `"outFiles"`
+```json
+  [...]
+      "program": "${workspaceFolder}/applicazione/src/index.ts",
+      "preLaunchTask": "tsc build - tsconfig.json",
+      "outFiles": [
+  [...]
+```
+Aggiungete un `breackpoint` nel file `index.ts` sulla prima riga e cliccate su launch (in alto a sinistra nella barra del `Run and debug`)
+
+
+
+
+ 
