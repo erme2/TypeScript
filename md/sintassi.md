@@ -344,7 +344,8 @@ let employee5: Employee = {
 ```
 
 ## Union Types
-Il segno `|` pipe ci consente di 
+Il segno `|` pipe ci consente di avere più di un type per ogni argomento o risultato. Questo strumento va utilizzato con molta cautela.
+Per avere migliori risultati si consiglia di usare questo strumento in congiunzione con il narrowing: ossia l'uso della funzione `typeof` per eseguire codice in base al tipo selezionato. TS é intelligente e controlla che i controlli usando `typeof` siano eseguiti correttamente e suggerisce all'editor solo le funzioni adatte al tipo di variabile nella situazione selezionata.
 
 ```typescript
 function kgToLbs(weight: number|string): number
@@ -359,4 +360,75 @@ function kgToLbs(weight: number|string): number
 
 console.log(kgToLbs(10));
 console.log(kgToLbs("10kg"));
+```
+
+## Intersection types
+L'intersection ci per mette di unire due tipi di variabile nella stessa variabile usando il segno `&`. 
+
+```typescript
+type Draggable = {
+    drag: () => void
+};
+type Resizable = {
+    resize: () => void
+};
+type UiWidget = Draggable & Resizable;
+
+let widget: UiWidget = {
+    drag: () => {},
+    resize: () => {}
+};
+```
+
+## Literal Types
+In alcune situazioni potrebbe essere utile avere un numero limitato di valori possibili per una variabile. Questo é possibile con i literal values:
+```typescript
+let qtt1: 50|100 = 50;
+let qtt2: 50|100 = 52; // error
+type Quantity = 50|100;
+let qtt3: Quantity = 100;
+let qtt4: Quantity = 43; // error
+```
+
+## Optional Chaining
+Diciamo che vogliamo eseguire una operazione su un oggetto che potrebbe essere `null` o `undefined`.
+Basterà aggiungere il carattere `?` e il codice sarà considerato valido solo se la variabile non sara `null` o `undefined`
+
+```typescript
+type Customer = {
+    birthday: Date
+}
+
+function getCustomer(id: number): Customer|null|undefined
+{
+    if (id === 0) {
+        return null;
+    } else {
+        return {birthday: new Date()};
+    }
+}
+
+let customer  = getCustomer(0);
+
+// standard
+if (customer !== null && customer !== undefined) {
+    console.log(customer.birthday);
+}
+// con optional chaining operator
+console.log(customer?.birthday);
+console.log(customer?.birthday?.getFullYear());
+```
+
+## Optional Call
+Come l'[Optional Chaining](sintassi.md#optional-chaining) ma applicato alle funzioni
+
+```typescript
+// funzione valida 
+let log_A: any = (message: string) => console.log(message);
+let log_B: any = null;
+
+log_A('a'); // tutto ok
+log_B('a'); // errore
+log_A?.('A'); // la funzione verrà eseguita 
+log_B?.('A'); // la funzione non verrà eseguita
 ```
