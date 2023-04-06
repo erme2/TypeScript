@@ -1,19 +1,12 @@
-function calculateTax5(income: number)
+function kgToLbs(weight: number|string): number
 {
-    if (income < 50_000)
-        return 0;
-}
-function calculateTax6(income: number, incomeYear = 2022): number
-{
-    let taxesPerc: number;
-
-    if (incomeYear > 2000) {
-        taxesPerc = 0.2;
+    // Narrowing
+    if (typeof weight === 'number') {
+        return weight * 2.2;
     } else {
-        taxesPerc = 0.4;
+        return parseInt(weight) * 2.2;
     }
-    if (income < 50_000)
-        return 0;
-
-    return income * taxesPerc;
 }
+
+console.log(kgToLbs(10));
+console.log(kgToLbs("10kg"));
