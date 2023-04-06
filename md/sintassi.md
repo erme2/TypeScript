@@ -92,7 +92,7 @@ JS ha una lista molto limitata di types:
 - [enums](./sintassi.md#enums)
 - [tuples](./sintassi.md#tuples)
 
-### Numbers underscore
+## Numbers underscore
 ```typescript
 /*
 in typescript i numeri possono essere intervallati 
@@ -103,14 +103,12 @@ let sales: number = 123456789;
 let sales: number = 123_456_789;
 ```
 
-### Types annotations
-```typescript
-/*
+# Types annotations
 Quando dichiariamo una variabile possiamo usare una 
 annotation che dichiara in maniera esplicita il type 
 che vogliamo asssegnare alla variabile.
-*/
 
+```typescript
 let test1: number = 123_456_789;
 /*
 ma questa dichiarazione é ridondante se assegnamo 
@@ -128,11 +126,11 @@ variabile di tipo any
 let test4;
 ```
 
-### any
+## any
 La variabile di tipo `any` disabilita il controllo che TS esegue sulla tipologia della variabile. Praticamente una variabile di tipo `any` si comporta come una qualsiasi variabile JS vanificando la caratteristica principale di TS. Per questo motivo é fortemente sconsigliato l'utilizzo di variabili di tipo `any`.
 
 
-### tuples
+## tuples
 Le varibili di tipo tuples ci consentono di definire array di dimensione definita e un tipo per ogni variabile
 
 ```typescript
@@ -140,7 +138,7 @@ let tuple1: [number, string] = [1, 'test'];
 let tuple2: [number, string] = [1, 'test', 3]; // error
 ```
 
-### enums
+## enums
 Enumb rappresenta un numero limitato di valori possibili per una variabile.
 
 ```typescript
@@ -250,4 +248,115 @@ function calculateTax6(income: number, incomeYear = 2022): number
 
     return income * taxesPerc;
 }
+```
+
+## objects
+Quando dichiaramo un oggetto in JS é perfettamente normale che siano dinamici, e che si possa cambiare e aggiornare non solo quali e quante proprietà ma anche il tipo di ogni proprietà
+
+```javascript
+let employee = {id: 1};
+employee.id = "01";
+employee.name = "John";
+```
+
+In TS non solo non é consentito cambiare il tipo delle variabili, ma una volta definito un oggetto non é possibile aggiungere/eliminare proprietà.
+
+```typescript
+let employee = {id: 1};
+// Type 'string' is not assignable to type 'number'.
+employee.id = "01"; 
+// Property 'name' does not exist on type '{ id: number; }'.
+employee.name = "John"; 
+```
+
+Possiamo inoltre definire l'oggetto in maniera molto esatta:
+```typescript
+// valido
+let employee1: 
+{
+    id: number,
+    name: string
+} = {id: 1, name: "John"};
+
+// invalido (property name is missing)
+let employee2: 
+{
+    id: number,
+    name: string
+} = {id: 1};
+employee2.name = "John";
+
+// valido (name ora é opzionale)
+let employee3: 
+{
+    id: number,
+    name?: string
+} = {id: 1};
+employee3.name = "John";
+
+// readonly properties
+let employee4: 
+{
+    readonly id: number,
+    name: string
+} = {id: 1, name: "John"};
+employee4.id = 3; // invalido
+```
+
+Naturalmente é possibile dichiarare funzioni all'interno degli oggetti ed é possibile specificare i tipi per tutti i parametri e i risultati
+
+```typescript
+// funzioni all'interno degli oggetti
+let employee5: 
+{
+    readonly id: number,
+    name: string,
+    retire: (date: Date) => boolean
+} = {
+    id: 1, 
+    name: "John",
+    retire: (date: Date) => {
+        console.log(date);
+        return true;
+    }
+};
+
+```
+
+# Advanced Types
+## Type Alias
+Abbiamo visto come dichiarare un oggetto può diventare complicato, ma soprattutto dovremo ripetere quella struttura ogni volta che avremo a che fare con quel tipo di oggetto. Per questo esistono i Type Alias
+```typescript
+type Employee = {
+    readonly id: number,
+    name: string,
+    retire: (date: Date) => boolean
+}
+
+let employee5: Employee = {
+    id: 1, 
+    name: "John",
+    retire: (date: Date) => {
+        console.log(date);
+        return true;
+    }
+};
+```
+
+## Union Types
+Il segno `|` pipe ci consente di 
+
+```typescript
+function kgToLbs(weight: number|string): number
+{
+    // Narrowing
+    if (typeof weight === 'number') {
+        return weight * 2.2;
+    } else {
+        return parseInt(weight) * 2.2;
+    }
+}
+
+console.log(kgToLbs(10));
+console.log(kgToLbs("10kg"));
 ```
